@@ -66,9 +66,9 @@ public class ClientSimple {
                     String codeCours = scanner.nextLine();
                     Course course = new Course(name, codeCours, session)
 
-                    RegistrationForm form = new RegistrationForm(prenom, nom, email, matricule, course);
+                    RegistrationForm formular = new RegistrationForm(prenom, nom, email, matricule, course);
 
-                    objectOutputStream.writeObject("Inscription"+ form);
+                    objectOutputStream.writeObject("Inscription "+ formular);
 
                     //Recevoir la reponse du serveur
                     String reponse = objectInputStream.readUTF();
