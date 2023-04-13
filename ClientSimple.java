@@ -53,4 +53,25 @@ public class ClientSimple {
             inscription();
         }
     }
+    public static void inscription(){
+                    System.out.println("Entrez votre prénom : ");
+                    String prenom = scanner.nextLine();
+                    System.out.println("Entrez votre nom : ");
+                    String nom = scanner.nextLine();
+                    System.out.println("Entrez votre email (étudiant) : ");
+                    String email = scanner.nextLine();
+                    System.out.println("Entrez votre matricule : ");
+                    String matricule = scanner.nextLine();
+                    System.out.println("Entrez le code du cours : ");
+                    String codeCours = scanner.nextLine();
+                    Course course = new Course(name, codeCours, session)
+
+                    RegistrationForm form = new RegistrationForm(prenom, nom, email, matricule, course);
+
+                    objectOutputStream.writeObject("Inscription"+ form);
+
+                    //Recevoir la reponse du serveur
+                    String reponse = objectInputStream.readUTF();
+                    System.out.println(reponse);
+                }
 }
