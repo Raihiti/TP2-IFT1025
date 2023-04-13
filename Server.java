@@ -2,14 +2,19 @@ package server;
 
 import javafx.util.Pair;
 import server.models.RegistrationForm;
+import server.models.Course;
 
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
+import java.io.File;
+import java.io.FileWriter;
+import java.io.BufferedWriter;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Scanner;
 
 public class Server {
 
@@ -116,10 +121,10 @@ public class Server {
         }
         try {
             objectOutputStream.writeObject(coursesList);
+            objectOutputStream.close();
         } catch (IOException ex) {
             System.out.println("Erreur à l'écriture du fichier");
         }
-        objectOutputStream.close();
     }
 
     /**
@@ -131,18 +136,22 @@ public class Server {
         // TODO: implémenter cette méthode
         try {
             RegistrationForm formular = (RegistrationForm) objectInputStream.readObject();
-        } catch (IOException ex) {
+            BufferedWriter writer;
+            FileWriter fw = new FileWriter("/data/inscription.txt");
+            writer = new BufferedWriter(fw);
+            writer.append(formular.getCourse().getSession() + "\t" + formular.getCourse().getCode() + "\t" + formular.getMatricule() + "\t" + formular.getNom() + "\t" + formular.getPrenom() + "\t" + formular.getEmail() + "\n");
+            writer.close();
+        } catch (IOException | ClassNotFoundException ex) {
             System.out.println("Erreur à la lecture de l'objet");
         }
+        BufferedWriter writer = null;
         try {
-            FileWriter fw = new FileWriter("/data/inscription.txt");
-            BufferedWriter writer = new BufferedWriter(fw);
-            writer.append(formular.getCourse().getSession() + "\t" + formular.getCourse().getCode() + "\t" + formular.getMatricule() + "\t" + formular.getNom() + "\t" + formular.getPrenom() + "\t" + formular.getEmail() + "\n");
-            client.getOutputStream().write("Bravo, vous vous êtes inscrit au cours avec succès !");
+            objectOutputStream.writeUTF("Bravo, vous vous êtes inscrit au cours avec succès !");
         } catch (IOException ex) {
-            System.out.println("Erreur à l'écriture du fichier");
+            System.out.println("Erreur à l'écriture du String");
         }
-        writer.close
+
+
     }
 }
 
