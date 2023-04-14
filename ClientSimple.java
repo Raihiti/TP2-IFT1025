@@ -65,11 +65,11 @@ public class ClientSimple {
         String matricule = scanner.nextLine();
         System.out.println("Entrez le code du cours : ");
         String codeCours = scanner.nextLine();
-        Course course = new Course(name, codeCours, session);
 
         boolean validate = true;
         for (Course c : coursesList) {
             if (c.code == codeCours) {
+                String name = c.name;
                 validate = true;
                 break;
             } else {
@@ -77,6 +77,7 @@ public class ClientSimple {
             }
         }
         if (validate) {
+            Course course = new Course(name, codeCours, session);
             RegistrationForm formular = new RegistrationForm(prenom, nom, email, matricule, course);
 
             objectOutputStream.writeObject("Inscription "+ formular);
