@@ -8,7 +8,7 @@ import java.net.Socket;
 import java.util.ArrayList;
 import java.util.Scanner;
 
-public class ClientSimple {
+public class ClientSimpleTest {
     private static Socket clientSocket;
     private static ObjectInputStream objectInputStream;
     private static ObjectOutputStream objectOutputStream;
