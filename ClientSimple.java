@@ -43,18 +43,18 @@ public class ClientSimple {
             System.out.println(j + ". " + coursesList.get(i).code + "\t" + course.name);
         }
         System.out.print(decision);
-        decisionHandler(scan.nextInt());
+        decisionHandler(scan.nextInt(), session);
     }
 
-    public static void decisionHandler(int choice) {
+    public static void decisionHandler(int choice, String session) {
         if (choice == 1) {
             System.out.print(sessionChoice);
             load(scan.nextInt());
         } else if (choice == 2) {
-            inscription();
+            inscription(String session);
         }
     }
-    public static void inscription(){
+    public static void inscription(String session){
         System.out.println("Entrez votre prénom : ");
         String prenom = scanner.nextLine();
         System.out.println("Entrez votre nom : ");
