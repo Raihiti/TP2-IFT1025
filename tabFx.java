@@ -13,17 +13,17 @@ import javafx.event.EventHandler;
 import javafx.scene.control.Button;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.input.MouseEvent;
-public class test extends Application {
+public class tabFx extends Application {
 
     private String selectedValue;
 
     @Override
     public void start(Stage stage) throws Exception {
 
-        // create table view
+        // creation du tableau JavaFX
         TableView<Person> tableView = new TableView<>();
 
-        // create columns
+        // creation des colonnes
         TableColumn<Person, String> firstName = new TableColumn<>("First Name");
         firstName.setCellValueFactory(new PropertyValueFactory<>("firstName"));
         TableColumn<Person, String> lastName = new TableColumn<>("Last Name");
@@ -31,10 +31,10 @@ public class test extends Application {
 
 
 
-        // add columns to table view
+        // On ajoute les colonnes au tableau
         tableView.getColumns().addAll(firstName,lastName);
 
-        // add data to table view
+        // Entrer des donnees dans le tabView
         ObservableList<Person> data = FXCollections.observableArrayList(
                 new Person("John", "Doe"),
                 new Person("Jane", "Doe"),
@@ -54,21 +54,21 @@ public class test extends Application {
         });
 
         // Bouton pour afficher la valeur
-        Button button = new Button("Store Selected Value");
+        Button button = new Button("Stocker la valeur");
         button.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
-                // store selected value in variable
+                //Stocke la valeur
                 System.out.println(selectedValue);
             }
         });
 
-        // create border pane and add table view and button to it
+        // creation BorderPane avec le bouton et le tableau
         BorderPane borderPane = new BorderPane();
         borderPane.setCenter(tableView);
         borderPane.setBottom(button);
 
-        // create scene and set it on the stage
+        // Creation de la scene
         Scene scene = new Scene(borderPane, 400, 400);
         stage.setScene(scene);
         stage.show();
@@ -78,7 +78,7 @@ public class test extends Application {
         launch(args);
     }
 
-    // Person class
+    // Person class : pour le test du tableau
     public static class Person {
         private String firstName;
         private String lastName;
