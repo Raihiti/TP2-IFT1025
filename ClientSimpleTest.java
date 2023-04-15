@@ -79,11 +79,12 @@ public class ClientSimpleTest {
         String matricule = scan.nextLine();
         System.out.println("Entrez le code du cours : ");
         String codeCours = scan.nextLine();
-
+        
+        String name = "";
         boolean validate = true;
         for (Course c : coursesList) {
             if (c.getCode() == codeCours) {
-                String name = c.getName();
+                name = c.getName();
                 validate = true;
                 break;
             } else {
