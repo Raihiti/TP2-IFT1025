@@ -1,7 +1,10 @@
 import javafx.application.Application;
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.geometry.Orientation;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.VBox;
@@ -17,6 +20,10 @@ import java.util.ArrayList;
 public class MaFenetre extends Application {
 
     private String optionSelectionner;
+    private String prenom;
+    private String nom;
+    private String email;
+    private String matricule;
 
     @Override
     public void start(Stage primaryStage) throws Exception {
@@ -27,15 +34,11 @@ public class MaFenetre extends Application {
         VBox leftPane = new VBox();
         BorderPane highLeftPane = new BorderPane();
         BorderPane lowLeftPane = new BorderPane();
-        lowLeftPane.setPrefSize(400,600);
-        Label label1 = new Label("Partie gauche du haut");
-        highLeftPane.getChildren().add(label1);
-        leftPane.getChildren().addAll(highLeftPane,lowLeftPane);
+        lowLeftPane.setPrefSize(400, 600);
+        leftPane.getChildren().addAll(highLeftPane, lowLeftPane);
 
         // Créer une partie droite du SplitPane
-        GridPane rightPane = new GridPane();
-        Label label3 = new Label("Partie droite");
-        rightPane.add(label3, 0, 0);
+        BorderPane rightPane = new BorderPane();
 
         // Ajouter les parties gauche et droite au SplitPane
         splitPane.getItems().addAll(leftPane, rightPane);
@@ -43,7 +46,7 @@ public class MaFenetre extends Application {
         // Diviser la partie gauche en deux parties supplémentaires
         SplitPane leftSplitPane = new SplitPane();
         leftSplitPane.setOrientation(Orientation.VERTICAL);
-        leftSplitPane.getItems().addAll(highLeftPane,lowLeftPane);
+        leftSplitPane.getItems().addAll(highLeftPane, lowLeftPane);
 
         // Définir les proportions des parties dans le SplitPane
         splitPane.setDividerPositions(0.5);
@@ -53,7 +56,7 @@ public class MaFenetre extends Application {
         leftPane.getChildren().add(leftSplitPane);
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
-//Partie sur les interfaces, boutton, tableau, etc.\
+//Partie sur les interfaces, boutton, tableau, etc.
 
         // Code pour la partie bas gauche
 
@@ -62,19 +65,23 @@ public class MaFenetre extends Application {
         comboBox.getItems().addAll("Automne", "Été", "Hiver");
 
         // Ajouter un bouton pour stocker la réponse sélectionnée dans la ComboBox
-        Button bouton2 = new Button("Stocker la réponse");
-        bouton2.setOnAction(event -> {
+        Button charger = new Button("Charger");
+        charger.setOnAction(event -> {
             optionSelectionner = comboBox.getValue();
             System.out.println("La réponse sélectionnée est : " + optionSelectionner);
         });
 
         //Placer les boutons
-        BorderPane.setAlignment(bouton2, Pos.CENTER_RIGHT);
-        lowLeftPane.setRight(bouton2);
+        BorderPane.setAlignment(charger, Pos.CENTER_RIGHT);
+        lowLeftPane.setRight(charger);
         BorderPane.setAlignment(comboBox, Pos.CENTER_LEFT);
         lowLeftPane.setLeft(comboBox);
         BorderPane.setMargin(comboBox, new Insets(10));
-        BorderPane.setMargin(bouton2, new Insets(10));
+        BorderPane.setMargin(charger, new Insets(10));
+
+
+
+
 
         // Code pour la partie haut gauche
 
@@ -83,16 +90,100 @@ public class MaFenetre extends Application {
         titreTab.setStyle("-fx-font-size: 20pt;");
 
         //Positionnement
-        titreTab.setAlignment(Pos.CENTER);
+
         highLeftPane.setTop(titreTab);
         BorderPane.setAlignment(titreTab, Pos.CENTER);
         BorderPane.setMargin(titreTab, new Insets(10));
 
         //Tableau
-        //TableView<coursesList> tabCours = new TableView<>();
+        TableView<ArrayList> tabCours = new TableView<>();
+        highLeftPane.setCenter(tabCours);
 
-        //Ajout des colonnes
-        //TableColumn<>
+
+
+
+
+        // Code pour la partie droite
+
+        //Titre
+        Label titreDroite = new Label("Formulaire d'inscription");
+        titreDroite.setStyle("-fx-font-size: 20pt;");
+        rightPane.setTop(titreDroite);
+        BorderPane.setAlignment(titreDroite, Pos.CENTER);
+
+        // Permet creer une zone de texte et de la contenir dans une variable
+        GridPane espace = new GridPane();
+        espace.setHgap(10);
+        espace.setVgap(20);
+
+        // Chaque case de texte a son texte approprié
+        TextField prenomCase = new TextField();
+        Label label1 = new Label("Prenom");
+        prenomCase.setPrefHeight(10);
+        prenomCase.setPrefWidth(200);
+
+
+        TextField nomCase = new TextField();
+        Label label2 = new Label("Nom");
+        nomCase.setPrefHeight(10);
+        nomCase.setPrefWidth(200);
+
+
+        TextField emailCase = new TextField();
+        Label label3 = new Label("email");
+        emailCase.setPrefHeight(10);
+        emailCase.setPrefWidth(200);
+
+
+        TextField matriculeCase = new TextField();
+        Label label4 = new Label("matricule");
+        matriculeCase.setPrefHeight(10);
+        matriculeCase.setPrefWidth(200);
+
+
+        Button envoyer = new Button("envoyer");
+        envoyer.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent mouseEvent) {
+                prenom = prenomCase.getText();
+                nom = nomCase.getText();
+                email = emailCase.getText();
+                matricule = matriculeCase.getText();
+                ArrayList<String> test = new ArrayList<>();
+                test.add(prenom);
+                test.add(nom);
+                test.add(email);
+                test.add(matricule);
+                for (int i = 0; i < 4; i++){
+                    System.out.println(test.get(i));
+
+            }
+
+        }});
+
+
+        espace.setAlignment(Pos.TOP_CENTER);
+
+        espace.add(label1, 0, 0);
+        espace.add(prenomCase, 1, 0);
+        espace.add(label2,0 ,1 );
+        espace.add(nomCase, 1 ,1);
+        espace.add(label3,0 , 2);
+        espace.add(emailCase,1 ,2);
+        espace.add(label4, 0 ,3);
+        espace.add(matriculeCase,1,3);
+        espace.add(envoyer,1,4);
+
+        rightPane.setCenter(espace);
+        BorderPane.setMargin(espace, new Insets(20,0,0,0));
+
+
+
+
+
+
+
+
 
 
 
@@ -113,13 +204,7 @@ public class MaFenetre extends Application {
 
 }
 
-
-
-
-
-
 // Permet creer une zone de texte et de la contenir dans une variable
-//  VBox root = new VBox();
 //
 //        TextField textField = new TextField();
 //        textField.setOnAction(event -> {
@@ -141,3 +226,21 @@ public class MaFenetre extends Application {
 //            selectedOption = comboBox.getValue();
 //            System.out.println("La réponse sélectionnée est : " + selectedOption);
 // ps : selectedOption est une variable String (private String selectedOption;)
+
+// code pour mettre une bar en bas
+//        ScrollPane scrollPane = new ScrollPane(tableau);
+//        scrollPane.setFitToWidth(true);
+//        scrollPane.setHbarPolicy(ScrollPane.ScrollBarPolicy.ALWAYS);
+
+
+//Ajout d'un evenement lorsque l'utilisateur clique sur le tableau, on stocke la valeur
+//tableView.setOnMouseClicked(new EventHandler<MouseEvent>() {
+//            @Override
+//            public void handle(MouseEvent event) {
+//                // recuperer la ligne cliquer
+//                Person selectedPerson = tableView.getSelectionModel().getSelectedItem();
+//                String name = selectedPerson.getFirstName();
+//                String lastname = selectedPerson.getLastName();
+//                selectedValue = name + lastname;
+//            }
+//        });
