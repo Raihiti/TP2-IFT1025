@@ -4,12 +4,7 @@ import javafx.util.Pair;
 import server.models.RegistrationForm;
 import server.models.Course;
 
-import java.io.IOException;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
-import java.io.File;
-import java.io.FileWriter;
-import java.io.BufferedWriter;
+import java.io.*;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.ArrayList;
@@ -76,8 +71,8 @@ public class Server {
     }
 
     public void disconnect() throws IOException {
-        objectOutputStream.close();
         objectInputStream.close();
+        objectOutputStream.close();
         client.close();
     }
 
@@ -98,31 +93,23 @@ public class Server {
      */
     public void handleLoadCourses(String arg) {
         // TODO: implémenter cette méthode
-        Course course;
         String[] line;
-        ArrayList<Course> coursesList = new ArrayList<Course>();
+        ArrayList<Course> coursesList = new ArrayList<>();
         try {
-            Scanner scan = new Scanner(new File("/data/cours.txt"));
-
-            /** ---A IGNORER --- FileInputStream fileIs = new FileInputStream("/data/cours.txt");
-            ObjectInputStream is = new ObjectInputStream(fileIs); */
+            Scanner scan = new Scanner(new BufferedReader(new FileReader("main/java/server/data/cours.txt")));
             while (scan.hasNext()) {
                 line = scan.nextLine().split("\t");
-                if (line[2] == arg) {
+                if (line[2].equals(arg)) {
                     coursesList.add(new Course(line[1], line[0], line[2]));
                 }
-                /** --- A IGNORER --- course = (Course) is.readObject();
-                 if (course.session == arg) {
-                 coursesList.add(course);
-                 }*/
             }
         } catch (IOException ex) {
             System.out.println("Erreur à la lecture du fichier");
         }
         try {
             objectOutputStream.writeObject(coursesList);
-            objectOutputStream.close();
         } catch (IOException ex) {
+            ex.printStackTrace();
             System.out.println("Erreur à l'écriture du fichier");
         }
     }
@@ -137,16 +124,15 @@ public class Server {
         try {
             RegistrationForm formular = (RegistrationForm) objectInputStream.readObject();
             BufferedWriter writer;
-            FileWriter fw = new FileWriter("/data/inscription.txt");
+            FileWriter fw = new FileWriter("main/java/server/data/inscription.txt", true);
             writer = new BufferedWriter(fw);
-            writer.append(formular.getCourse().getSession() + "\t" + formular.getCourse().getCode() + "\t" + formular.getMatricule() + "\t" + formular.getNom() + "\t" + formular.getPrenom() + "\t" + formular.getEmail() + "\n");
+            writer.write(formular.getCourse().getSession() + "\t" + formular.getCourse().getCode() + "\t" + formular.getMatricule() + "\t" + formular.getNom() + "\t" + formular.getPrenom() + "\t" + formular.getEmail() + "\n");
             writer.close();
         } catch (IOException | ClassNotFoundException ex) {
             System.out.println("Erreur à la lecture de l'objet");
         }
-        BufferedWriter writer = null;
         try {
-            objectOutputStream.writeUTF("Bravo, vous vous êtes inscrit au cours avec succès !");
+            objectOutputStream.writeObject("Bravo, vous vous êtes inscrit au cours avec succès !");
         } catch (IOException ex) {
             System.out.println("Erreur à l'écriture du String");
         }
