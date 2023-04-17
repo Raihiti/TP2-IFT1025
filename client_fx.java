@@ -113,7 +113,6 @@ public class client_fx extends Application {
                         Course coursSelectionner = tabCours.getSelectionModel().getSelectedItem();
                         codeCours = coursSelectionner.getCode();
                         nomCours = coursSelectionner.getName();
-                        System.out.println(codeCours);
                     }
                 }
             });
