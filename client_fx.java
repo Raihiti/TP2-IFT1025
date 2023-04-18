@@ -126,7 +126,7 @@ public class client_fx extends Application {
 
         // CODE PARTIE BAS GAUCHE
 
-        // Ajouter du bouton roulette
+        // Ajout du bouton roulette avec les différentes session
         ComboBox<String> comboBox = new ComboBox<>();
         comboBox.getItems().addAll("Automne", "Ete", "Hiver");
 
@@ -154,7 +154,7 @@ public class client_fx extends Application {
 
         });
 
-        //Placer les boutons
+        //Positionnement des boutons roulette et "charger"
         BorderPane.setAlignment(charger, Pos.CENTER_RIGHT);
         lowLeftPane.setRight(charger);
         BorderPane.setAlignment(comboBox, Pos.CENTER_LEFT);
@@ -171,8 +171,8 @@ public class client_fx extends Application {
         rightPane.setTop(titreInscription);
         BorderPane.setMargin(titreInscription, new Insets(10));
         BorderPane.setAlignment(titreInscription, Pos.CENTER);
-
-        // Permet creer une zone de texte et de la contenir dans une variable
+        
+        // Nouvelle racine pour avoir que les cases texte, leur texte et le bouton envoyer
         GridPane espace = new GridPane();
         espace.setHgap(10);
         espace.setVgap(20);
@@ -207,7 +207,10 @@ public class client_fx extends Application {
         envoyer.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent mouseEvent) {
-                // Si les champs ne sont pas remplis correctement, traitement des erreurs de champs puis renvoie une erreur
+                
+                // Si les champs ne sont pas remplis correctement, traitement des erreurs de champs puis renvoie une alerte erreur.
+                // Sinon on stocke les données et on les renvoies au serveur
+                
                 if (prenomCase.getText().isEmpty() || nomCase.getText().isEmpty() && matriculeCase.getText().isEmpty() && emailCase.getText().isEmpty()) {
 
                     alerteErreur("Veuillez remplir les champs correctement.");
@@ -267,11 +270,11 @@ public class client_fx extends Application {
                 }
             }
         });
-
-
+        
+       // Positionnement de tout l'ensemble au haut du centre
         espace.setAlignment(Pos.TOP_CENTER);
 
-        //Ajout et positionnement du texte avec le bouton approprier
+        //Ajout et positionnement du texte avec le bouton approprier dans le GridPane
 
         espace.add(label1, 0, 0);
         espace.add(prenomCase, 1, 0);
@@ -287,7 +290,9 @@ public class client_fx extends Application {
         BorderPane.setMargin(espace, new Insets(20, 0, 0, 0));
 
 
-// creer la fenetre
+        // Creation de la fenetre
+        
+        
         // Créer une scène et ajouter le SplitPane
         Scene scene = new Scene(splitPane, 800, 600);
 
