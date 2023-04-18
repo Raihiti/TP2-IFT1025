@@ -27,6 +27,10 @@ import javafx.scene.input.MouseEvent;
 
 
 public class client_fx extends Application {
+    /**
+     * String sessionSelectionner : stocke la session selectionner dans la liste déroulante
+     *
+     */
 
     private String sessionSelectionner;
     private static Socket clientSocket;
@@ -111,7 +115,7 @@ public class client_fx extends Application {
                 // Une ligne est sélectionnée, faire quelque chose
                     if (tabCours.getSelectionModel().getSelectedItem() != null) {
                         Course coursSelectionner = tabCours.getSelectionModel().getSelectedItem();
-                        codeCours = coursSelectionner.getCode();
+                         codeCours = coursSelectionner.getCode();
                         nomCours = coursSelectionner.getName();
                     }
                 }
@@ -138,9 +142,6 @@ public class client_fx extends Application {
 
                 objectOutputStream.writeObject("CHARGER " + sessionSelectionner);
                 coursesList = (ArrayList<Course>) objectInputStream.readObject();
-                if (coursesList.isEmpty()) {
-                    System.out.println("vide");
-                }
                 ObservableList<Course> data = FXCollections.observableArrayList(coursesList);
                 tabCours.setItems(data);
 
@@ -210,8 +211,10 @@ public class client_fx extends Application {
                 if (prenomCase.getText().isEmpty() || nomCase.getText().isEmpty() && matriculeCase.getText().isEmpty() && emailCase.getText().isEmpty()) {
 
                     alerteErreur("Veuillez remplir les champs correctement.");
-                } else if (nomCours == null || codeCours == null) {
+                    return;
+                }if (nomCours == null || codeCours == null) {
                     alerteErreur("Veuillez choisir un cours dans la liste des cours en cliquant dessus.");
+                    return;
                 }
                 if (!emailCase.getText().matches("^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}$")) {
                     IdErreur = 1;
@@ -228,7 +231,6 @@ public class client_fx extends Application {
                         IdErreur = 0;
                     } else if (IdErreur == 2) {
                         alerteErreur("Le champ matricule n'est pas correct.");
-                        System.out.println(matriculeCase.getText().length());
                         IdErreur = 0;
                     }
                     else{
@@ -243,6 +245,10 @@ public class client_fx extends Application {
                     matricule = matriculeCase.getText();
                     Course course = new Course(nomCours, codeCours, sessionSelectionner);
                     RegistrationForm formular = new RegistrationForm(prenom, nom, email, matricule, course);
+                    prenomCase.clear();
+                    nomCase.clear();
+                    emailCase.clear();
+                    matriculeCase.clear();
 
                     try {
                         clientSocket = new Socket("127.0.0.1", 1337);
@@ -304,7 +310,7 @@ public class client_fx extends Application {
     }
 
     public static void alerteConfirm(String message){
-        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+        Alert alert = new Alert(Alert.AlertType.INFORMATION);
         alert.setTitle("Confirmation inscription");
         alert.setHeaderText(null);
         alert.setContentText(message);
